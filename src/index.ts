@@ -13,6 +13,11 @@ if (args.length === 0) {
       console.log(`Name: ${user.name}`);
       console.log(`Following: ${user.followingNumber}`);
       console.log(`Followers: ${user.followersNumber}`);
+
+      if(user.languages) {
+        console.log(`Languages: ${user.languages.join(', ')}`);
+      }
+      
     }
   }
   )
