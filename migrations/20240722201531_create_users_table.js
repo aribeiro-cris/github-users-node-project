@@ -2,13 +2,13 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function(knex) {
+export async function up(knex) {
   return knex.schema.createTable('users', function(table) {
     table.increments('id').primary(); // Primary key
     table.string('name').notNullable();
     table.string('location');
-    table.integer('following');
-    table.integer('followers'); 
+    table.integer('following').notNullable();
+    table.integer('followers').notNullable(); 
     table.specificType('languages', 'TEXT[]');
   })
 };
@@ -17,6 +17,6 @@ exports.up = function(knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function(knex) {
+export async function down(knex) {
   return knex.schema.dropTableIfExists('users');
 };
