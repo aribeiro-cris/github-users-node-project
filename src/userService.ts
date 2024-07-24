@@ -6,6 +6,10 @@ const saveUserQuery = `INSERT INTO users (name, location, following, followers, 
 
 const showAllUsersQuery = `SELECT * FROM users;`;
 
+const usersPerLocationQuery = `SELECT * FROM users WHERE location = $1`;
+
+const usersPerLanguageQuery = `SELECT * FROM users WHERE $1 = ANY(languages)`;
+
 interface User {
     name: string,
     location?: string,
@@ -38,5 +42,43 @@ export const showAllUsers = async () => {
         })
     } catch (err) {
         console.log(`Error while trying to access all users stored in the database: ${err}`);
+    }
+}
+
+export const showUsersPerLocation = async (location: string) => {
+    try {
+        const users = await db.any(usersPerLocationQuery, location);
+
+        if (users.length === 0) {
+            console.log(`No users living on location ${location} stored in the database.`)
+            return;
+        }
+        
+        console.log(`Users on database living in ${location}:`);
+        users.forEach((user) => {
+            console.log(`User ID: ${user.id}, Name: ${user.name}`);
+        });
+    } catch (err) {
+        console.log(`Error while trying to access all users from ${location}: ${err}`);
+
+    }
+}
+
+export const showUsersPerLanguage = async (language: string) => {
+    try {
+        const users = await db.any(usersPerLanguageQuery, [language]);
+
+        if (users.length === 0) {
+            console.log(`No users using ${language} stored in the database.`)
+            return;
+        }
+        
+        console.log(`Users on database using ${language}:`);
+        users.forEach((user) => {
+            console.log(`User ID: ${user.id}, Name: ${user.name}`);
+        });
+    } catch (err) {
+        console.log(`Error while trying to access all users using ${language}: ${err}`);
+
     }
 }
