@@ -13,8 +13,8 @@ interface UserFetchResponse {
 interface User {
     name: string;
     location?: string;
-    followingNumber: number;
-    followersNumber: number;
+    following: number;
+    followers: number;
     languages?: string[];
 }
 
@@ -31,8 +31,8 @@ const fetchUserFromGithub = async (username: string) => {
     const user: User = {
       name: data.name,
       location: data.location,
-      followingNumber: data.following,
-      followersNumber: data.followers,
+      following: data.following,
+      followers: data.followers,
       languages: await fetchLanguagesFromUser(data.repos_url),
     };
     return user;

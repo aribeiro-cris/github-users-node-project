@@ -14,8 +14,8 @@ const usersPerLanguageQuery = `SELECT * FROM users WHERE $1 = ANY(languages)`;
 interface User {
     name: string,
     location?: string,
-    followingNumber: number,
-    followersNumber: number,
+    following: number,
+    followers: number,
     languages?: string[];
 }
 
@@ -24,8 +24,8 @@ export const saveUser = async (user: User) => {
     const saveUser = await db.one(saveUserQuery, [
       user.name,
       user.location,
-      user.followingNumber,
-      user.followersNumber,
+      user.following,
+      user.followers,
       user.languages
     ]);
     console.log(`User created on the database with ID: ${saveUser.id}`);
@@ -34,52 +34,58 @@ export const saveUser = async (user: User) => {
   }
 }
 
-export const showAllUsers = async () => {
+export const showAllUsers = async (): Promise<User[]> => {
   try {
     const users = await db.any(showAllUsersQuery);
     console.log(`Users on the database:`);
     users.forEach((user) => {
       console.log(`User ID: ${user.id}, Name: ${user.name}`);
-    })
+    });
+    return users;
   } catch (err) {
     console.log(`Error while accessing users stored in the database: ${err}`);
+    return [];
   }
 }
 
-export const showUsersPerLocation = async (location: string) => {
+export const UsersPerLocation = async (location: string): Promise<User[]> => {
   try {
     const users = await db.any(usersPerLocationQuery, location);
 
     if (users.length === 0) {
       console.log(`No users living on ${location} in the database.`)
-      return;
+      return [];
     }
         
     console.log(`Users on database living in ${location}:`);
     users.forEach((user) => {
       console.log(`User ID: ${user.id}, Name: ${user.name}`);
     });
+
+    return users;
   } catch (err) {
     console.log(`Error while acessing all users from ${location}: ${err}`);
-
+    return [];
   }
 }
 
-export const showUsersPerLanguage = async (language: string) => {
+export const UsersPerLanguage = async (language: string): Promise<User[]> => {
   try {
     const users = await db.any(usersPerLanguageQuery, [language]);
 
     if (users.length === 0) {
       console.log(`No users using ${language} stored in the database.`)
-      return;
+      return [];
     }
         
     console.log(`Users on database using ${language}:`);
     users.forEach((user) => {
       console.log(`User ID: ${user.id}, Name: ${user.name}`);
     });
+
+    return users;
   } catch (err) {
     console.log(`Error while acessing all users using ${language}: ${err}`);
-
+    return [];
   }
 }
