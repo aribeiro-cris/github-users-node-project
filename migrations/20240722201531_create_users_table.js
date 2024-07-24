@@ -5,8 +5,8 @@
 export async function up(knex) {
   return knex.schema.createTable('users', function(table) {
     table.increments('id').primary(); // Primary key
-    table.string('name').notNullable();
-    table.string('location');
+    table.string('name', 255).notNullable(); // 255 max length
+    table.string('location', 255);
     table.integer('following').notNullable();
     table.integer('followers').notNullable(); 
     table.specificType('languages', 'TEXT[]');
