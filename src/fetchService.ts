@@ -13,8 +13,8 @@ interface UserFetchResponse {
 interface User {
     name: string;
     location?: string;
-    followingNumber?: number;
-    followersNumber?: number;
+    followingNumber: number;
+    followersNumber: number;
     languages?: string[];
 }
 
@@ -35,9 +35,7 @@ const fetchUserFromGithub = async (username: string) => {
             followersNumber: data.followers,
             languages: await fetchLanguagesFromUser(data.repos_url),
         };
-
         return user;
-
     } catch (err) {
         console.log(`Error fetching user data: ${err}`);
     }
@@ -51,7 +49,7 @@ const fetchLanguagesFromUser = async (reposUrl: string): Promise<string[]> => {
             throw new Error(`Error fetching repos data: ${response.status}`);
         }
 
-        const repositories = await response.json();
+        const repositories = await response.json() as { languages_url: string }[];
         const languages: string[] = [];
 
        for (const repository of repositories) {
@@ -80,7 +78,7 @@ const fetchLanguagesFromRepo = async(languagesUrl: string) => {
             throw new Error(`Error fetching languages data: ${response.status}`)
         }
 
-        const languages = await response.json();
+        const languages = await response.json() as { [key:string]: string};
         return Object.keys(languages);
     } catch (err) {
         console.log(`Error fetching languages data: ${err}`);
