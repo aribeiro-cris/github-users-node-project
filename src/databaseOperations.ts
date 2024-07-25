@@ -1,15 +1,17 @@
 import db from "./database.js";
 
-const saveUserQuery = `INSERT INTO users 
-                    (name, location, following, followers, languages)
-                    VALUES ($1, $2, $3, $4, $5)
-                    RETURNING id`;
+const saveUserQuery = `
+  INSERT INTO users (name, location, following, followers, languages)
+  VALUES ($1, $2, $3, $4, $5)
+  RETURNING id;
+  `;
 
 const showAllUsersQuery = `SELECT * FROM users;`;
 
-const usersPerLocationQuery = `SELECT * FROM users WHERE location = $1`;
+const usersPerLocationQuery = `SELECT * FROM users WHERE location = $1;`;
 
-const usersPerLanguageQuery = `SELECT * FROM users WHERE $1 = ANY(languages)`;
+// Matches the value with any element in the languages array
+const usersPerLanguageQuery = `SELECT * FROM users WHERE $1 = ANY(languages);`;
 
 interface User {
     name: string,
@@ -19,7 +21,7 @@ interface User {
     languages?: string[];
 }
 
-export const saveUser = async (user: User) => {
+export const saveUser = async (user: User): Promise<void> => {
   try {
     const saveUser = await db.one(saveUserQuery, [
       user.name,

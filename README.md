@@ -57,7 +57,7 @@ npm run start-dev list
 ```
 npm run start-dev location <location>
 ``` 
-4. Filter users usigin a specific programming language:
+4. Filter users using a specific programming language:
 ```
 npm run start-dev language <language>
 ``` 

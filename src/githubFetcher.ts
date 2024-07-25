@@ -50,9 +50,11 @@ const fetchLanguagesFromUser = async (reposUrl: string): Promise<string[]> => {
       throw new Error(`Error fetching repos data: ${response.status}`);
     }
 
+    // Transforms JSON into an array of repositories
     const repositories = await response.json() as { languages_url: string }[];
     const languages: string[] = [];
 
+    // Tterate over repositories to fetch and accumulate languages 
     for (const repository of repositories) {
       const repoLanguages = await fetchLanguages(repository.languages_url);
       repoLanguages.forEach(language => {
@@ -79,8 +81,9 @@ const fetchLanguages = async(languagesUrl: string) => {
       throw new Error(`Error fetching languages data: ${response.status}`)
     }
 
-    const languages = await response.json() as { [key:string]: string};
-    return Object.keys(languages);
+    // Parse the JSON response into a dictionary of languages
+    const languages = await response.json() as { [key:string]: number};
+    return Object.keys(languages); // Returns only the key part
   } catch (err) {
     console.log(`Error fetching languages data: ${err}`);
     return [];
