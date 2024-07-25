@@ -1,6 +1,6 @@
-import fetchUserFromGithub from './fetchService.js'; 
+import fetchUserFromGithub from './githubFetcher.js'; 
 // eslint-disable-next-line max-len
-import {saveUser, showAllUsers, UsersPerLocation, UsersPerLanguage} from './userService.js';
+import {saveUser, showAllUsers, UsersPerLocation, UsersPerLanguage} from './databaseOperations.js';
 
 export async function main() {
 //command line args
@@ -49,7 +49,7 @@ export async function main() {
     const language = args[1];
 
     if(!language) {
-      console.log(`Please add a language be display users from database.`);
+      console.log(`Please add a language to be display users from database.`);
       return;
     }
 
