@@ -18,7 +18,7 @@ interface User {
     languages?: string[];
 }
 
-const fetchUserFromGithub = async (username: string) => {
+const fetchUserFromGithub = async (username: string): Promise<User | null> => {
   try {
     const response = await fetch(`${API_URL}${username}`);
 
@@ -38,6 +38,7 @@ const fetchUserFromGithub = async (username: string) => {
     return user;
   } catch (err) {
     console.log(`Error fetching user data: ${err}`);
+    return null;
   }
 }
 

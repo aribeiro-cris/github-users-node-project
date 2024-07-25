@@ -2,7 +2,7 @@ import fetchUserFromGithub from './fetchService.js';
 // eslint-disable-next-line max-len
 import {saveUser, showAllUsers, UsersPerLocation, UsersPerLanguage} from './userService.js';
 
-async function main() {
+export async function main() {
 //command line args
   const args = process.argv.slice(2); //array with the args passing on index 2
 
