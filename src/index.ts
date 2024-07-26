@@ -25,7 +25,7 @@ export async function main() {
       if(user) {
         await saveUser(user);
         console.log(`Name: ${user.name}`);
-        if(user.location) {
+        if(location) {
           console.log(`Location: ${user.location}`);
         }
         console.log(`Following: ${user.following}`);
