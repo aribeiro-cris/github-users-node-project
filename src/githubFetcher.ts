@@ -4,6 +4,7 @@ const API_URL = 'https://api.github.com/users/';
 
 interface UserFetchResponse {
     name: string;
+    id: number; // github id
     location?: string;
     following: number;
     followers: number;
@@ -12,6 +13,7 @@ interface UserFetchResponse {
 
 interface User {
     name: string;
+    github_id: number;
     location?: string;
     following: number;
     followers: number;
@@ -30,6 +32,7 @@ const fetchUserFromGithub = async (username: string): Promise<User | null> => {
 
     const user: User = {
       name: data.name,
+      github_id: data.id,
       location: data.location,
       following: data.following,
       followers: data.followers,

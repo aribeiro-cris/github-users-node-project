@@ -1,6 +1,6 @@
 import fetchUserFromGithub from './githubFetcher.js'; 
 // eslint-disable-next-line max-len
-import {saveUser, showAllUsers, UsersPerLocation, UsersPerLanguage} from './databaseOperations.js';
+import {saveUser, showAllUsers, UsersPerLocation, UsersPerLanguage, ExistingUser} from './databaseOperations.js';
 
 export async function main() {
 //command line args
@@ -23,9 +23,15 @@ export async function main() {
 
     fetchUserFromGithub(username).then(async (user) => {
       if(user) {
+        const existingUser = await ExistingUser(user.github_id);
+      
+        if (existingUser) {
+          return;
+        }
+
         await saveUser(user);
         console.log(`Name: ${user.name}`);
-        if(location) {
+        if(user.location) {
           console.log(`Location: ${user.location}`);
         }
         console.log(`Following: ${user.following}`);
@@ -37,7 +43,7 @@ export async function main() {
       }
     });
   } else if(command === 'list') {
-    showAllUsers();
+    await showAllUsers();
   } else if(command === 'location') {
     const location = args[1];
 
@@ -46,7 +52,7 @@ export async function main() {
       return;
     }
 
-    UsersPerLocation(location);
+    await UsersPerLocation(location);
   
   } else if(command === 'language') {
     const language = args[1];
@@ -56,7 +62,7 @@ export async function main() {
       return;
     }
 
-    UsersPerLanguage(language);
+    await UsersPerLanguage(language);
   }
 }
 
